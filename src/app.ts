@@ -2,7 +2,7 @@ import { config } from 'dotenv';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
 import fetch from 'node-fetch';
-import proxyConfig from './config.example';
+import proxyConfig from './config';
 
 config();
 
