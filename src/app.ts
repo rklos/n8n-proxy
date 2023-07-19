@@ -51,6 +51,7 @@ app.all(`/${endpoint}/:path`, async (req, res) => {
     },
     method: req.method,
     data: req.body,
+    // It allows to continue even if the response is not 200
     validateStatus: () => true,
   });
 
