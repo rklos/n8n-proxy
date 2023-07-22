@@ -53,9 +53,9 @@ app.all(`/${endpoint}/:path`, async (req, res) => {
     data: req.body,
     // It allows to continue even if the response is not 200
     validateStatus: () => true,
-  });
+  }).catch(() => {});
 
-  if (response.status !== 200) {
+  if (response?.status !== 200) {
     res.status(500)
       .send('Internal Server Error');
     return;
