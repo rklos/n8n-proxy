@@ -2,6 +2,7 @@ import axios from 'axios';
 import { config } from 'dotenv';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
+import cors from 'cors';
 import proxyConfig from './config';
 
 config();
@@ -16,6 +17,7 @@ const limiter = rateLimit({
 
 app.set('trust proxy', process.env.TRUST_PROXIES || false);
 app.use(limiter);
+app.use(cors({ origin: process.env.CORS_ORIGIN }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
