@@ -26,11 +26,12 @@ app.get('/test-ip', (req, res) => {
     .send(req.ip);
 });
 
-const endpoint = (process.env.ENDPOINT_PATH || '')
+let endpoint = (process.env.ENDPOINT_PATH || '')
   .replace(/\/$/, '')
   .replace(/^\//, '');
+if (endpoint) endpoint = `/${endpoint}`;
 
-app.all(`/${endpoint}/:path`, async (req, res) => {
+app.all(`${endpoint}/:path`, async (req, res) => {
   const proxyPath = req.params.path;
   const config = proxyConfig.find((item) => item.proxyPath === proxyPath);
   if (!config || config.method.toLowerCase() !== req.method.toLowerCase()) {
