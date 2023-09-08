@@ -2,6 +2,8 @@ import axios from 'axios';
 import { config } from 'dotenv';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
+
+// TODO: przerobić na YAML
 import proxyConfig from './config';
 
 config();
