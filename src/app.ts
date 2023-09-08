@@ -4,7 +4,7 @@ import express from 'express';
 import rateLimit from 'express-rate-limit';
 import cors from 'cors';
 
-// TODO: przerobić na YAML
+// TODO: refactor to YAML
 import proxyConfig from './config';
 
 config();
