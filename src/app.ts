@@ -2,6 +2,7 @@ import axios from 'axios';
 import { config } from 'dotenv';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
+import cors from 'cors';
 
 // TODO: przerobić na YAML
 import proxyConfig from './config';
@@ -11,13 +12,14 @@ config();
 const app = express();
 
 const limiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  max: 5,
+  windowMs: 15 * 60 * 1000,
+  max: 10,
   legacyHeaders: false,
 });
 
 app.set('trust proxy', process.env.TRUST_PROXIES || false);
 app.use(limiter);
+app.use(cors({ origin: process.env.CORS_ORIGIN }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -26,8 +28,10 @@ app.get('/test-ip', (req, res) => {
     .send(req.ip);
 });
 
-const endpoint = (process.env.ENDPOINT_PATH || '')
-  .replace(/\/$/, '');
+let endpoint = (process.env.ENDPOINT_PATH || '')
+  .replace(/\/$/, '')
+  .replace(/^\//, '');
+if (endpoint) endpoint = `/${endpoint}`;
 
 app.all(`${endpoint}/:path`, async (req, res) => {
   const proxyPath = req.params.path;
@@ -52,10 +56,11 @@ app.all(`${endpoint}/:path`, async (req, res) => {
     },
     method: req.method,
     data: req.body,
+    // It allows to continue even if the response is not 200
     validateStatus: () => true,
-  });
+  }).catch(() => {});
 
-  if (response.status !== 200) {
+  if (response?.status !== 200) {
     res.status(500)
       .send('Internal Server Error');
     return;

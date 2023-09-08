@@ -6,6 +6,6 @@ interface ConfigItem {
   returnResponse?: boolean;
 }
 
-export const configExample: ConfigItem[] = [];
+export const config: ConfigItem[] = [];
 
-export default configExample;
+export default config;
