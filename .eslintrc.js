@@ -20,6 +20,7 @@ module.exports = {
   rules: {
     'import/extensions': [ 'error', 'never' ],
     'array-bracket-spacing': [ 'error', 'always', { objectsInArrays: false, arraysInArrays: false }],
+    '@typescript-eslint/consistent-type-imports': 1,
   },
   ignorePatterns: [ 'dist' ],
 };
