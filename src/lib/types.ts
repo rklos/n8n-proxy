@@ -4,5 +4,5 @@ export interface ConfigItem {
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   returnResponse?: boolean;
   rateLimited?: boolean;
-  cache?: number;
+  cache?: string;
 }

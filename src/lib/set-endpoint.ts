@@ -1,8 +1,11 @@
-import type { Router, RequestHandler } from 'express';
+import type { Router, RequestHandler, Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
+import apicache from 'apicache';
 import type { ConfigItem } from './types';
-import { cache } from '../middlewares/cache';
 import { getProxy } from './get-proxy';
+
+const cache = apicache.middleware;
+const onlyStatus200 = (req: Request, res: Response) => res.statusCode === 200;
 
 export function setEndpoint(app: Router, config: ConfigItem) {
   const handlers: RequestHandler[] = [];
@@ -11,7 +14,7 @@ export function setEndpoint(app: Router, config: ConfigItem) {
   handlers.push(proxy);
 
   if (config.cache) {
-    handlers.unshift(cache(config.cache));
+    handlers.unshift(cache(config.cache, onlyStatus200));
   }
 
   if (config.rateLimited) {
